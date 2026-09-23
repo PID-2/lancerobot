@@ -1,0 +1,108 @@
+S1 Rules and the Maze — Dublin Micromouse Open 2026
+
+  HC Build Hub  <index.html>
+ Home <index.html> Workshops <learn.html?scope=workshops> Wiki <learn.html?scope=wiki> Search <videos.html> Micromouse 2026 <micromouse.html> Resource Hub <micromouse-resources.html>
+
+ Resource Hub <micromouse-resources.html> / Strategies / S1
+ S1 · Rules
+
+# Rules and the maze
+
+ The maze is a fixed, published standard, and the rules of a run decide how you should play it. Read this before you write any code.
+
+{#maze}
+ 01 The maze
+
+ We run to the classic 16 x 16 standard of the UK Micromouse and Robotics Society (UKMARS), so every maze file, simulator and write-up from the sport applies directly. Nothing is bespoke to Dublin.
+
+ Classic micromouse maze specification
+| Grid | 16 x 16 cells, 2880 mm square |
+
+| Cell pitch | 180 mm centre to centre |
+
+| Clear passage | 168 mm between walls (walls are 12 mm thick) |
+
+| Wall height | 50 mm |
+
+| Finish | White wall sides, red tops, matt black floor |
+
+| Posts | 12 x 12 mm at every lattice point, even where no wall is fitted |
+
+| Start | A corner cell, walled on three sides |
+
+| Goal | The 2 x 2 block at the centre, with one entrance |
+
+[IMG src=assets/micromouse/diagrams/maze-anatomy.svg alt='A 16 by 16 micromouse maze with the start cell in the bottom-left corner and a two-by-two goal region at the centre.']
+
+Start in a corner, goal at the centre. Walls shown are illustrative only.
+
+ Design to these numbers. Posts give you a 180 mm feature to correct distance against, but they also cause sensor spikes you must not read as walls. The goal is a set of four cells, not a coordinate. Calibrate your sensors under the lights you will race in.
+
+{#mouse}
+ 02 What counts as a micromouse
+
+There is no weight, cost or height limit. The rules protect one thing: the mouse solves the maze itself.
+
+-
+
+#### Fits inside a 25 cm square
+
+Measured on the floor, at all times. You cannot start compact and unfold.
+
+-
+
+#### Autonomous and self-contained
+
+No remote control, tethers or off-board computing. No human input once the run starts.
+
+-
+
+#### Stays on the floor and uses the openings
+
+No flying, jumping or climbing walls.
+
+-
+
+#### Does not damage or mark the maze
+
+Nothing may be deposited in the maze, so no trail to navigate by.
+
+-
+
+#### Does not shed parts
+
+The mouse that finishes is the mouse that started.
+
+ The unwritten rule: the maze is unseen. You cannot hard-code a route or tune to a layout. Your code has to work on a maze handed to you cold.
+
+{#run}
+ 03 How a run is timed and scored
+
+- You get ten minutes in the maze (fewer if the entry list demands it) and up to five runs.
+
+- A run is timed from leaving the start cell to reaching the goal. Time between runs is not run time, but it does use up your ten minutes.
+
+- Your score is your best single run. A slow exploratory first run does not drag it down.
+
+- You may not touch a running mouse unless a judge says so. A requested recovery erases the mouse's memory of the maze. Where a touch is allowed and the run continues, expect three seconds plus a tenth of the run time added.
+
+ What that means: explore, bank a safe finish, then escalate speed run by run. One recorded 45-second run beats four spectacular crashes and no time on the board. See S2 Race strategy <micromouse/micromouse-strategy.html>.
+
+{#dublin}
+ 04 The Dublin format
+
+ The maze is the classic standard, but the build window is not: six hours, one identical kit per team, design, build, program and race on the day.
+
+- Every team gets the same kit: ESP32, encoded motors, motor driver, IMU, distance sensors, BMS, buck converter and battery.
+
+- Judging is the fastest verified run to the centre, with further awards for design and reliability.
+
+- Full-size and mini practice mazes are open all day. One mini maze is built so the fastest route cuts diagonally.
+
+Event details, kit list and registration → <micromouse.html?nav=2>
+
+ Next →S2 Race strategy <micromouse/micromouse-strategy.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

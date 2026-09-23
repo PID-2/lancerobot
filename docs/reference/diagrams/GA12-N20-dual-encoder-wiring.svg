@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Dual GA12-N20 motor and Hall encoder wiring overview</title>
+  <desc id="desc">A DRI0044 drives two motors. An ESP32-C6 powers two compatible Hall encoders at 3.3 volts and reads four A and B signals. All grounds are common.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f8fa}.panel{fill:#fff;stroke:#cbd3dc;stroke-width:3}.heading{font:700 28px Arial,sans-serif;fill:#1f2937}.label{font:600 20px Arial,sans-serif;fill:#1f2937}.small{font:500 17px Arial,sans-serif;fill:#4b5563}.motor{stroke:#e4572e;stroke-width:7;fill:none}.logic{stroke:#168f84;stroke-width:6;fill:none}.ground{stroke:#374151;stroke-width:5;fill:none}.power{stroke:#d39b19;stroke-width:7;fill:none}.warn{fill:#fff3cd;stroke:#d39b19;stroke-width:2}.pulse{fill:none;stroke:#168f84;stroke-width:5}
+    </style>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#e4572e"/></marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#168f84"/></marker>
+  </defs>
+  <rect class="bg" width="1200" height="720"/>
+  <text class="heading" x="600" y="48" text-anchor="middle">Two motors: drive power and encoder feedback</text>
+
+  <rect class="panel" x="430" y="92" width="340" height="180" rx="18"/>
+  <text class="heading" x="600" y="132" text-anchor="middle">DFRobot DRI0044</text>
+  <text class="small" x="600" y="163" text-anchor="middle">motor driver</text>
+  <text class="label" x="462" y="214">M1+ / M1-</text>
+  <text class="label" x="618" y="214">M2+ / M2-</text>
+  <text class="label" x="545" y="252">VM</text>
+
+  <rect class="panel" x="55" y="326" width="315" height="240" rx="18"/>
+  <text class="heading" x="212" y="370" text-anchor="middle">Left GA12-N20</text>
+  <text class="small" x="212" y="401" text-anchor="middle">6 V motor + Hall encoder</text>
+  <text class="label" x="82" y="449">M+ / M-</text>
+  <text class="label" x="82" y="488">VCC / GND</text>
+  <text class="label" x="82" y="527">A / B</text>
+
+  <rect class="panel" x="830" y="326" width="315" height="240" rx="18"/>
+  <text class="heading" x="987" y="370" text-anchor="middle">Right GA12-N20</text>
+  <text class="small" x="987" y="401" text-anchor="middle">6 V motor + Hall encoder</text>
+  <text class="label" x="857" y="449">M+ / M-</text>
+  <text class="label" x="857" y="488">VCC / GND</text>
+  <text class="label" x="857" y="527">A / B</text>
+
+  <rect class="panel" x="430" y="350" width="340" height="216" rx="18"/>
+  <text class="heading" x="600" y="394" text-anchor="middle">ESP32-C6</text>
+  <text class="label" x="464" y="444">3V3</text>
+  <text class="label" x="464" y="482">GND</text>
+  <text class="label" x="464" y="520">4 GPIO inputs</text>
+  <text class="small" x="464" y="548">Left A/B + Right A/B</text>
+
+  <path class="motor" marker-end="url(#arrowOrange)" d="M488 225 C390 256 332 292 248 326"/>
+  <path class="motor" marker-end="url(#arrowOrange)" d="M712 225 C810 256 868 292 952 326"/>
+  <text class="small" x="303" y="270">motor wires</text>
+  <text class="small" x="815" y="270">motor wires</text>
+
+  <path class="logic" marker-end="url(#arrowGreen)" d="M370 510 C405 510 410 512 430 520"/>
+  <path class="logic" marker-end="url(#arrowGreen)" d="M830 510 C795 510 790 512 770 520"/>
+  <path class="logic" d="M370 470 C405 470 410 458 430 444"/>
+  <path class="logic" d="M830 470 C795 470 790 458 770 444"/>
+  <text class="small" x="376" y="546">A/B</text>
+  <text class="small" x="790" y="546">A/B</text>
+
+  <path class="power" marker-end="url(#arrowOrange)" d="M600 302 V272"/>
+  <text class="small" x="620" y="318">verified motor supply</text>
+  <rect class="warn" x="110" y="614" width="980" height="70" rx="12"/>
+  <text class="label" x="600" y="643" text-anchor="middle">Use the connector labels, not assumed wire colours.</text>
+  <text class="small" x="600" y="669" text-anchor="middle">Common ground • encoder logic at 3.3 V • motor voltage kept off ESP32 GPIO</text>
+</svg>

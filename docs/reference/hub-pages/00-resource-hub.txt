@@ -1,0 +1,29 @@
+Resource Hub — Dublin Micromouse Open 2026
+
+  HC Build Hub  <index.html>
+ Home <index.html> Workshops <learn.html?scope=workshops> Wiki <learn.html?scope=wiki> Search <videos.html> Micromouse 2026 <micromouse.html> Resource Hub <micromouse-resources.html>
+
+ ← Back to Micromouse 2026 <micromouse.html> Dublin Micromouse Open 2026
+
+# {#hubTitle} Resource Hub
+
+Everything your team needs to prepare, build and compete — search it, or jump straight to the part you're stuck on.
+
+ / Search resources {#mmSearch}
+
+ All Strategy Hardware Software
+
+14 resources
+
+  Start here  New to the kit? Set up the ESP32-C6 first Identify your controller and plan the pins before you connect anything else.  →  <micromouse/micromouse-esp32c6.html>
+  S1  Strategy Rules and the maze The 16 × 16 standard, run timing, and what counts as a legal run.   <micromouse-guide.html>  S2  Strategy Race strategy How to spend six hours: search run, speed run, and when to stop tuning.   <micromouse/micromouse-strategy.html>  S3  Strategy Flood fill and routing The algorithm that finds the centre — and how to make it take diagonals.   <micromouse/micromouse-algorithms.html>  S4  Strategy Motion and hardware Wheel geometry, turning, and keeping the mouse straight down a corridor.   <micromouse/micromouse-build.html>  S5  Strategy Playbook and failures An hour-by-hour plan for the six-hour build, and the failure modes to design against.   <micromouse/micromouse-playbook.html>  S6  Strategy Reading and video Builds, talks and papers worth an hour before you turn up.   <micromouse/micromouse-reading.html>  H1  Hardware ESP32-C6 Your controller: pinout, power, flashing, and the pins to leave alone.   <micromouse/micromouse-esp32c6.html>  H2  Hardware DFRobot DRI0044 motor driver Wiring, PWM channels and current limits for the driver in your kit.   <micromouse/micromouse-dri0044.html>  H3  Hardware DFRobot SEN0142 IMU Reading heading, calibrating, and correcting drift mid-run.   <micromouse/micromouse-sen0142.html>  H4  Hardware 3 × VL53L0X distance sensors Time-of-flight wall sensing, I²C addresses and mounting angles.   <micromouse/micromouse-vl53l0x.html>  H5  Hardware 2S battery to 5V buck converter Clean 5V out of the pack without browning out the ESP32.   <micromouse/micromouse-buck.html>  H6  Hardware 2 × GA12-N20 gear motors Encoders, gear ratios, and the torque you actually have to play with.   <micromouse/micromouse-motors.html>  C2  Software Git and GitHub basics Clone, commit, branch — enough to not lose your work at hour five.   <micromouse/micromouse-git.html>  C3  Software Working with AI agents on hardware Prompting, wiring up context, and debugging with an agent on the bench.   <micromouse/micromouse-ai-agents.html>
+
+Nothing matches that yet
+
+Try a component name, or clear the filters to see all fourteen resources.
+
+Resources are being prepared for the 2026 competition.
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

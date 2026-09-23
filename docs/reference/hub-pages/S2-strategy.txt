@@ -1,0 +1,56 @@
+S2 Race Strategy — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Strategies / S2
+ S2 · Strategy
+
+# Race strategy
+
+ Micromouse is two different races wearing one costume. Plan your five runs around that.
+
+{#two-phase}
+ 01 The two-phase race
+
+ The search run knows nothing and drives carefully to build a map. Its goal is information, not speed. The speed run then computes the best route through that map and drives it flat out, because it already knows every wall on the way.
+
+- Run 1: search. Slow, careful, map-building. Reach the centre.
+
+- Run 2: conservative speed run. Bank a time.
+
+- Run 3: faster, or a short re-exploration if a better route may exist in cells you never visited.
+
+- Runs 4–5: escalate until it breaks. A crash now costs you nothing.
+
+ The ladder is the whole strategy. Only your best run counts, so risk is cheap once you have a time on the board and ruinous before it. Teams lose by trying to win on run one.
+
+{#wallfollow}
+ 02 Why wall following fails
+
+ The left-hand rule only works on a maze where every wall connects to the outer boundary. The goal block at the centre is an island: a hand on the boundary wall loops back to the start forever and never enters the centre.
+
+[IMG src=../assets/micromouse/diagrams/wall-follower-fails.svg alt='A maze where a left-hand wall follower traces the outer boundary in a loop and never enters the island goal region at the centre.']
+
+The dashed path is a perfect left-hand follower doing exactly what it was told, forever.
+
+ This is why detached centre islands are standard. If your fallback plan is "at least the wall follower will finish", it will not. You need a mouse that builds a map and searches it: S3 Flood fill and routing <micromouse-algorithms.html>.
+
+{#exploration}
+ 03 Reaching the centre is not knowing the maze
+
+ Your map only holds the cells you walked through. The fastest path may run through cells you never entered, and your map cannot tell you whether they are open.
+
+- Go to the goal with unknown walls treated as open.
+
+- Come back to the start. The return leg sees walls from the other side for free.
+
+- Check only the cells that matter. Flood the map twice, once with unknowns open and once with unknowns walled. If the route costs match, stop searching and race. If the optimistic cost is much lower, the gap is in unexplored cells and worth checking.
+
+ Budget exploration against the clock. A search can eat two or three of your ten minutes. Decide in code, not in the moment, how much of the slot goes to exploring.
+
+ ← PreviousS1 Rules and the maze <../micromouse-guide.html> Next →S3 Flood fill and routing <micromouse-algorithms.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

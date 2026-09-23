@@ -1,0 +1,87 @@
+C3 Working with AI Agents on Hardware — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Software <../micromouse-resources.html#software> / C3
+ C3 · AI agents
+
+# Working with AI Agents on Hardware
+
+ An agent can write firmware and read logs, but it cannot see a loose wire or measure a voltage. Give it evidence from the real mouse.
+
+ 01 Give it the facts it cannot see
+
+Without them the agent fills the gaps with assumptions, and a confident answer can still be wrong for your board. Keep a context pack in the repo under docs/:
+
+- Your team's pin map <micromouse-esp32c6.html> and a short wiring table.
+
+- The exact board and revision, and the datasheets for each part.
+
+- Library names and versions, and the build, flash and serial-monitor commands.
+
+- Known-good test results.
+
+```
+You are helping with an ESP32 Micromouse.
+Read first: docs/pinout.md, platformio.ini, src/sensors.cpp
+
+Hardware facts: [board and revision], [verified pins], [supply and logic voltage]
+Problem: [what you expected, what actually happened]
+
+Do not rewrite the subsystem.
+List the evidence you need, then propose one small test.
+```
+
+Power off before rewiring. Check voltage levels, polarity and current limits against the real datasheet, not the agent's memory.
+
+ 02 Debug from evidence
+
+- Observe the real behaviour.
+
+- Log around one assumption.
+
+- Run it on the mouse.
+
+- Paste the real output back to the agent.
+
+- Change one thing, then retest.
+
+```
+Expected: all three sensors report a distance every 50 ms.
+Actual:   left and front work; right times out.
+
+I2C scan: 0x29
+left  init: OK   new address: 0x30
+right init: TIMEOUT
+```
+
+That report is far better than "the sensor does not work."
+
+ 03 Where agents go wrong
+
+- Invented library calls. Check the function against the installed version and its header.
+
+- Generic ESP32 pins. ESP32 is a family. Confirm each pin on your exact board, and that it is safe at boot.
+
+- Hardware faults treated as software. A missing ground, reversed power, a loose jumper or a level mismatch will not be fixed by more code. If a minimal test fails, inspect the circuit.
+
+- Big rewrites. They hide the cause and make rollback hard.
+
+ 04 Working rules for the team
+
+- Ask for small, reviewable changes: name the file, what must stay unchanged, what counts as success, and say "do not commit or push".
+
+- Commit a checkpoint <micromouse-git.html> before a big change and read git diff after it.
+
+- One owner per file. Never run two agents rewriting the same file.
+
+- Leave a handoff note: owner, files, what was tested, the result and the next test.
+
+- Stop and get a human if a part is hot, voltage is uncertain, the board resets when a motor starts, or a change would disable a safety limit.
+
+ ← PreviousC2 Git and GitHub basics <micromouse-git.html> Back to →Resource Hub <../micromouse-resources.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

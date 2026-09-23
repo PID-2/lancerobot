@@ -1,0 +1,61 @@
+H2 DFRobot DRI0044 — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Hardware <../micromouse-resources.html#hardware> / H2
+ H2 · Motor driver
+
+# DFRobot DRI0044
+
+ Drives both wheel motors. Each motor needs one direction signal and one PWM speed signal.
+
+ 01 Ratings and the one rule
+
+| Channels | 2 brushed DC motors, one per wheel |
+
+| Continuous current | 1.2 A per channel |
+
+| Logic supply VCC | 2.7–5.5 V |
+
+| Motor supply VM | 2.5–12 V |
+
+[IMG src=https://dfimg.dfrobot.com/nobody/wiki/482ccc756bc6e0a4a3b5057c3d58571a_0x0.png.webp alt='DFRobot DRI0044 pinout showing logic, motor and power connections']
+
+Official DRI0044 pinout.
+
+Keep VCC and VM separate. VCC is logic, VM is motor power. The GA12-N20 motors are rated 6 V, so check H6 <micromouse-motors.html> before connecting VM to a full 2S pack.
+
+ 02 Wiring
+
+| VCC | ESP32 3V3 |
+
+| GND | ESP32 ground and motor-supply ground |
+
+| DIR1 / PWM1 | Two ESP32 outputs: left direction / speed |
+
+| DIR2 / PWM2 | Two ESP32 outputs: right direction / speed |
+
+| VM | Motor supply |
+
+| M1+ M1- / M2+ M2- | Left motor / right motor |
+
+Take the four GPIO numbers from your ESP32-C6 pin map <micromouse-esp32c6.html>.
+
+ 03 Test before mounting
+
+- Wheels off the table. Check battery polarity, VCC, VM and the shared ground.
+
+- Start one motor at about 20–25% PWM.
+
+- Test forward, stop and reverse, then repeat for the second motor.
+
+- Stop if the ESP32 resets, the driver heats quickly or the current is unexpected.
+
+If a wheel spins the wrong way, swap that motor's two output wires or invert its direction in software.
+
+ ← PreviousH1 ESP32-C6 <micromouse-esp32c6.html> Next →H3 SEN0142 IMU <micromouse-sen0142.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

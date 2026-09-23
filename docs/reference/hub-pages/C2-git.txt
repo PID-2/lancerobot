@@ -1,0 +1,92 @@
+C2 Git and GitHub Basics — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Software <../micromouse-resources.html#software> / C2
+ C2 · Version control
+
+# Git and GitHub Basics
+
+ Four people and an AI agent change firmware fast. Git gives you one shared history and a safe way back to the version that worked.
+
+ 01 Set up once
+
+```
+git clone https://github.com/your-team/micromouse-firmware.git
+cd micromouse-firmware
+
+# integrator only, once:
+git switch -c sprint/micromouse
+git push -u origin sprint/micromouse
+
+# everyone else:
+git fetch origin
+git switch --track origin/sprint/micromouse
+```
+
+Replace the URL with your team's repository. Check git branch --show-current before editing.
+
+Never commit passwords, tokens or Wi-Fi credentials. Deleting them later does not remove them from history.
+
+ 02 The sprint loop
+
+Use one shared branch, small changes and frequent pushes.
+
+```
+Pull -> edit one task -> test on hardware -> commit -> push
+
+git pull origin sprint/micromouse
+git diff
+git add src/sensors.cpp
+git commit -m "fix: initialise right distance sensor"
+git push
+```
+
+- Give each active file one owner (for example sensors, motors, navigation, integration).
+
+- Test on the real mouse, then commit. Every 15–30 minutes, push a tested result.
+
+- Write one outcome per commit. Avoid update or final.
+
+- Before the final run: stop features, pull once, build, flash and test together.
+
+ 03 Rejected push and conflicts
+
+A rejected push means a teammate pushed first. Do not force push. Pull, test the combined code, then push.
+
+```
+git pull origin sprint/micromouse
+```
+
+- A conflict shows markers: <<<<<<< HEAD is yours, >>>>>>> is theirs.
+
+- Ask why each side changed, decide what the robot should actually use, and delete the markers.
+
+- Build, flash and test, then git add, commit and push.
+
+- Unsure? git merge --abort returns you to before the pull.
+
+ 04 Get back to a working mouse
+
+Commit a checkpoint after each real result: sensor reads, motors turn, mouse drives a cell, maze decision works.
+
+```
+git log --oneline --decorate -10
+git diff <known-good>..HEAD
+git revert <bad-commit>          # safe on the shared branch
+
+git switch -c diagnose/known-good <known-good>   # test an old version
+git switch sprint/micromouse                     # come back
+
+git stash push -m "experiment"   # park unfinished work
+git stash pop
+```
+
+On the shared branch prefer git revert to git reset --hard. git restore discards uncommitted changes, so check git diff first.
+
+ ← PreviousResource Hub <../micromouse-resources.html> Next →C3 AI agents on hardware <micromouse-ai-agents.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

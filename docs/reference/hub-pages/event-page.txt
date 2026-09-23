@@ -1,0 +1,172 @@
+Dublin Micromouse Open 2026 — Hack Club Build Hub
+
+  HC Build Hub  <index.html>
+ Home <index.html> Workshops <learn.html?scope=workshops> Wiki <learn.html?scope=wiki> Search <videos.html> Micromouse 2026 <micromouse.html> Resource Hub <micromouse-resources.html>
+
+  Registration opening soon  UCD ElecSoc · Hack Club
+
+# {#eventTitle} Dublin Micromouse Open 2026
+
+Ireland's first national Micromouse competition. Every team gets the same box of parts and six hours.
+
+Build it in six hours. Race it the same day.
+
+ Open the Resource Hub → <micromouse-resources.html> Read the guide <micromouse-guide.html>
+
+Date
+
+Sat 26 Sep 2026
+
+Where
+
+UCD Village
+
+Who
+
+Total beginners welcome
+
+[IMG src=assets/micromouse/start-line.jpg alt='Dublin Micromouse Open 2026 title card with a chequered start line.']
+
+No robot needed
+to enter
+
+ The day <#day> The challenge <#challenge> The kit <#kit> Prep <#prep> Judging <#judging>  Get in touch <mailto:eleceng@ucdsocieties.ie>
+
+{#day}  How the day works
+
+## {#dayTitle} Turn up with nothing. Leave having raced a robot.
+
+Four stages, one Saturday. You don't need to prepare anything — but the Resource Hub is there if you want a head start.
+
+01
+
+### Briefing
+
+30 minutes. Every diagram prepared for you — motors, driver, IMU, sensors, power, and the maze-solving strategies worth trying.
+
+02
+
+### Build sprint
+
+Six hours to design, solder and program your mouse. Mentors on the floor the whole time — stuck for a minute, not an hour.
+
+03
+
+### Practice mazes
+
+Full-size and mini mazes open all day. Tune against real walls instead of discovering the bug during your timed run.
+
+04
+
+### The race
+
+Classic 16 × 16 maze. Fastest verified run to the centre takes it, with further awards for design and reliability.
+
+{#challenge}
+
+ The challenge
+
+## {#challengeTitle} You're supposed to figure it out
+
+Micromouse is one of the oldest challenges in robotics: build a small robot that solves a maze entirely on its own. No remote control, no driver, no human input once the run starts. The mouse maps the maze, works out the fastest route to the centre, and drives it.
+
+Most Micromouse competitions are won by machines that took months to build. Ours is not one of those.
+
+Every team gets six hours and the same box of parts. The build sprint is the competition — so a first year who has never touched a soldering iron lines up against a final-year team on genuinely equal terms.
+
+[IMG src=assets/micromouse/figure-it-out-poster.jpg alt="Campaign poster reading: you're not supposed to know how, you're supposed to figure it out."]
+
+Get stuck. Get curious. Get unstuck.
+
+{#kit}
+ The kit
+
+## {#kitTitle} Same box of parts. Every team.
+
+Modular on purpose — there is no single correct mouse. We expect very different machines out of identical boxes.
+
+- ESP32-C6
+
+- Encoded motors
+
+- Motor driver
+
+- IMU
+
+- Distance sensors
+
+- Battery management
+
+- Buck converter
+
+- Battery pack
+
+{#prep}
+
+[IMG src=assets/micromouse/weve-got-robots-alt.jpg alt="Campaign poster: we've got robots, you've got squat — build a real robot, buff your CV."]
+
+Design · Solder · Code · Race
+
+ No experience needed
+
+## {#prepTitle} You are never handed a bag of parts and left to it
+
+Engineering and computer science undergraduates, and anyone else who wants a go. No robotics background, no embedded C, nothing to bring. Complete beginners are exactly who we built this for.
+
+Before
+
+A pre-recorded video series on driving the sensors with the ESP32, plus setup docs published in advance — so you don't lose an hour to toolchains.
+
+On the day
+
+Full briefing with diagrams, GitHub basics for anyone who hasn't used it, and a walk through maze-solving strategies so you pick an approach rather than guess.
+
+Throughout
+
+Committee members and postgraduate demonstrators on the floor all day. Stuck? Someone is standing next to you within a minute.
+
+{#judging}
+
+ Judging
+
+### {#judgingTitle} Fastest verified run wins
+
+The main award goes to the fastest verified run to the centre, with further awards for design and reliability.
+
+We run the classic 16 × 16 standard. Attempts, timing and what happens if you touch the mouse are all set out in the competition guide <micromouse-guide.html>.
+
+ The diagonal maze
+
+### {#diagonalTitle} If it can reason about the path, it wins
+
+One mini maze is built so the fastest route cuts the diagonals. A mouse that only follows the grid will finish. A mouse that thinks will beat it — and that maze is open all day so you can find out which one you built.
+
+{#campaign}  The campaign
+
+## {#campaignTitle} It knows the way out
+
+[IMG src=assets/micromouse/radar-contact.jpg alt='Radar sweep artwork: one contact detected — it knows the way out.']
+
+One contact detected
+
+[IMG src=assets/micromouse/cv-dull-dark.jpg alt='Poster reading: CV looking dull? Add a robot.']
+
+Add a robot
+
+[IMG src=assets/micromouse/figure-it-out-photo.jpg alt='Bench photo of a workspace mid-build: monitors, keyboard, multimeter and loose electronics.']
+
+Real dead ends. Real Tuesday nights.
+
+{#register}
+
+## {#registerTitle} Bring a team
+
+Registration details are coming shortly. Questions, want to enter, or interested in partnering — say hello and we'll put you on the list.
+
+ eleceng@ucdsocieties.ie <mailto:eleceng@ucdsocieties.ie> Browse the Resource Hub <micromouse-resources.html>
+
+Build it · Code it · Race it
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

@@ -1,0 +1,32 @@
+S6 Reading and Video — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Strategies / S6
+ S6 · Go deeper
+
+# Reading and video
+
+ Forty years of people have documented how they did it, and all of it is free. Start with the video.
+
+{#watch}
+ 01 Watch
+
+  Video · Veritasium The Fastest Maze-Solving Competition On Earth Watch this one first. Search runs, speed runs and why top mice look the way they do.  <https://www.youtube.com/watch?v=ZMQbHMgK2rw>  Video · UKMARS A full contest run, start to finish What an entire slot looks like: explore, return, speed run, escalate.  <https://www.youtube.com/watch?v=5Itos2Z6orQ>  Video · IEEE Bruins Micromouse lecture: flood fill A whiteboard-level university lecture, exactly the depth you need.  <https://www.youtube.com/watch?v=ktn3C7aXVR0>  Video · APEC 2024 HAL900's fastest run yet Top-tier diagonal running. Watch the route it chooses, not just the speed.  <https://www.youtube.com/watch?v=GNYlBb1Paxo>
+
+{#rules-reading}
+ 02 Rules and books
+
+  Rules · ukmars.org UK Micromouse Classic rules The definitive statement of the standard we run to.  <https://ukmars.org/contests/contest-rules/micromouse-classic/>  Book · micromouseonline.com Peter Harrison's Micromouse book The best single resource in the sport: chassis, sensors, motion control and maze solving.  <https://micromouseonline.com/micromouse-book/>  Chapter · micromouseonline.com Mazes and maze solving Flood fill, exploration and route cost, written for micromouse.  <https://micromouseonline.com/micromouse-book/mazes-and-maze-solving/>  Overview · Wikipedia Micromouse A fast orientation to the sport, its variants and its records.  <https://en.wikipedia.org/wiki/Micromouse>
+
+{#code-reading}
+ 03 Code to build on
+
+  GitHub · mackorone/mms The micromouse simulator Test your algorithm with no robot. Turn up with a working flood fill.  <https://github.com/mackorone/mms>  GitHub · ukmars mazerunner-core Complete, readable micromouse firmware: motion profiles, sensors, flood fill and search.  <https://github.com/ukmars/mazerunner-core>  GitHub · micromouseonline mazefiles Decades of real contest mazes to test your solver against.  <https://github.com/micromouseonline/mazefiles>
+
+ ← PreviousS5 Playbook and failures <micromouse-playbook.html> Back to →Resource Hub <../micromouse-resources.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

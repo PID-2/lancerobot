@@ -1,0 +1,87 @@
+S3 Flood Fill and Routing — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Strategies / S3
+ S3 · Algorithms
+
+# Flood fill and routing
+
+ One small algorithm finds the route. Weighting it by time, and driving diagonals, is what makes the route fast.
+
+{#floodfill}
+ 01 Flood fill
+
+ Label the goal cells 0, every cell one move away 1, and so on until every cell holds its distance from the goal. Then the mouse only ever moves to the reachable neighbour with the smallest number. It cannot loop and cannot fail to arrive.
+
+[IMG src=../assets/micromouse/diagrams/flood-fill.svg alt='A maze with every cell labelled by its distance from the goal, and a path descending the numbers from the start to the centre.']
+
+Every cell knows how far it is from home. The mouse only compares four numbers.
+
+```
+# The flood: breadth-first, outward from the goal cells.
+def flood(walls, goal_cells):
+    dist = [INFINITY] * 256
+    queue = deque()
+    for cell in goal_cells:
+        dist[cell] = 0
+        queue.append(cell)
+
+    while queue:
+        cell = queue.popleft()
+        for nb in open_neighbours(cell, walls):
+            if dist[nb] > dist[cell] + 1:
+                dist[nb] = dist[cell] + 1
+                queue.append(nb)
+    return dist
+
+# The drive: at every cell, take the smallest reachable number.
+def next_move(cell, walls, dist):
+    return min(open_neighbours(cell, walls), key=lambda nb: dist[nb])
+```
+
+ Do the simple thing. Re-flood all 256 cells after every new wall. An ESP32 does it in well under a millisecond. Only bother with incremental updates if you have time to spare.
+
+ The optimism rule. Treat every wall you have not seen as absent. The mouse heads for the shortest route that could exist and re-routes when it is blocked. Assuming walls are present makes it explore the whole maze first.
+
+{#cost}
+ 02 Cost turns, not cells
+
+ Plain flood fill finds the fewest cells, not the lowest time. A straight is nearly free and a turn costs a slow-down and a speed-up. Eleven cells with ten turns and eleven cells with one turn look identical to a naive flood and are seconds apart on the floor.
+
+[IMG src=../assets/micromouse/diagrams/route-cost.svg alt='Three routes between the same two cells: a staircase with ten turns, an L-shape with one turn, and a diagonal.']
+
+Same start and finish. Wildly different run times.
+
+```
+# Cost a move by what it does to the clock, not by counting squares.
+STRAIGHT      = 1.0   # continue in the current heading
+TURN_90       = 3.5   # decelerate, corner, accelerate again
+
+def move_cost(heading_in, heading_out):
+    return STRAIGHT if heading_in == heading_out else STRAIGHT + TURN_90
+```
+
+ Because cost depends on heading, model each cell as four states (one per heading) and flood over 1024 states. Set TURN_90 from measurement: time ten straight cells against ten cells with a turn in each.
+
+{#diagonals}
+ 03 Diagonals
+
+ A staircase of alternating turns is really a 45° straight line. Driving it as one diagonal covers about 29% less ground and turns ten slow-down-and-speed-up cycles into an entry turn, one straight and an exit turn. One mini practice maze on the day is built so the fastest line is diagonal.
+
+- Keep the flood on the orthogonal grid.
+
+- Turn the route into a string of moves, such as F F L R L R F R F.
+
+- Rewrite each alternating L R L R run as "enter diagonal, travel n half-cells, exit diagonal".
+
+- Hand the rewritten string to the motion controller. Only the driver needs to know what a diagonal is.
+
+ It has a cost. At 45° between posts there is far less clearance than the 168 mm corridor, so diagonals need good heading control and a narrow mouse. Get the orthogonal speed run reliable first.
+
+ ← PreviousS2 Race strategy <micromouse-strategy.html> Next →S4 Motion and hardware <micromouse-build.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

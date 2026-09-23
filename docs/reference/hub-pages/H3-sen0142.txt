@@ -1,0 +1,53 @@
+H3 DFRobot SEN0142 IMU — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Hardware <../micromouse-resources.html#hardware> / H3
+ H3 · Motion sensor
+
+# DFRobot SEN0142 IMU
+
+ A 6-axis accelerometer and gyro. On the mouse its job is turn angle: the gyro tells you how far you have rotated.
+
+ 01 What it gives you
+
+| Sensor | MPU-6050 (3-axis accelerometer + 3-axis gyro) |
+
+| Interface | I2C, address 0x68 |
+
+| Supply | 3–5 V. Use the ESP32 3V3 rail. |
+
+The gyro drifts and there is no compass. Use it for heading over a run, and correct it with encoders and wall sensors. See S4 Motion and hardware <micromouse-build.html>.
+
+ 02 Wiring
+
+| VIN / GND | ESP32 3V3 / GND |
+
+| SDA / SCL | The shared I2C bus, alongside the distance sensors |
+
+| INT | Optional data-ready input |
+
+| AUX_DA, AUX_CL | Leave unconnected |
+
+[IMG src=https://dfimg.dfrobot.com/99f64da1591d41a88712e46e2feb7a6b/wikien/e14c576930ba8daea73f5c38214275a5_0x0.png.webp alt='Official DFRobot SEN0142 Arduino I2C wiring example']
+
+Official wiring. Signal names match; the GPIO numbers are yours.
+
+ 03 Orientation and calibration
+
+- Fix the board flat and note which edge points forward.
+
+- Run an I2C scan and look for 0x68.
+
+- Keep the mouse completely still at power-up and average the gyro readings for a few seconds. That is your bias.
+
+- Rotate one axis at a time and confirm a left turn gives the sign your code expects.
+
+A rotated board or an uncorrected bias gives the wrong turn direction or a heading that walks off. Never calibrate while the bench is being nudged.
+
+ ← PreviousH2 DRI0044 motor driver <micromouse-dri0044.html> Next →H4 VL53L0X sensors <micromouse-vl53l0x.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

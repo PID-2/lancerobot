@@ -1,0 +1,55 @@
+H5 2S Battery to 5V Buck Converter — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Hardware <../micromouse-resources.html#hardware> / H5
+ H5 · Power
+
+# 2S Battery to 5V Buck Converter
+
+ Steps the 2S battery (7.4 V nominal, 8.4 V full) down to a stable 5.0 V rail for the controller and logic.
+
+ 01 Power path
+
+[IMG src=../assets/micromouse/diagrams/2S-5V-buck-power-flow.svg alt='Power path from a protected 2S battery through a buck converter to the ESP32-C6 and 3.3 V sensors']
+
+Protected battery, fuse and switch, then the buck converter, then the ESP32-C6 and 3.3 V sensors.
+
+| IN+ / IN- | Protected battery output, through a fuse and switch |
+
+| OUT+ | 5 V rail and the ESP32-C6 5V pin |
+
+| OUT- | Common GND |
+
+A buck converter is not a charger or battery protection. Use a protected 2S pack or BMS, the right 2S charger, a fuse and a main switch. Motor VM comes from the motor power path, not this logic rail.
+
+ 02 Set 5.0 V before connecting anything
+
+- Disconnect the ESP32, sensors and driver from the output.
+
+- Check battery polarity and power only the input.
+
+- Measure across OUT+ and OUT- and turn the trimmer slowly until the meter reads 5.00 V.
+
+- Switch off, connect the load, switch on and measure again.
+
+Never connect USB and the external 5 V rail to the ESP32-C6 at the same time.
+
+ 03 Check it under load
+
+- Rail stays at 5 V and the 3.3 V rail does not sag when the motors run.
+
+- Motor noise does not reset the ESP32 or corrupt sensor readings.
+
+- Module and wiring stay cool over a full-length slot.
+
+- Choosing a module: MP1584EN is compact, LM2596 is larger with easier terminals. Size it for controller peak + sensors + margin, and test it under the real load.
+
+If the controller resets when the motors start, measure the rail and the battery during acceleration and fix the wiring, grounding or decoupling. Do not raise the output above 5 V.
+
+ ← PreviousH4 VL53L0X sensors <micromouse-vl53l0x.html> Next →H6 GA12-N20 motors <micromouse-motors.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

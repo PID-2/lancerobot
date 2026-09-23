@@ -1,0 +1,57 @@
+S5 Playbook and Failures — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Strategies / S5
+ S5 · On the day
+
+# Playbook and failures
+
+ Work in this order and you will always have a mouse that works, only progressively faster.
+
+{#playbook}
+ 01 A six-hour playbook
+
+-  Hour 0 – 1 · Move something
+Blink an LED, then get both motors turning and confirm encoder counts change the right way. Split the team: mechanics, motion, sensors.
+
+-  Hour 1 – 2 · Drive one cell
+Travel exactly 180 mm and stop, and turn exactly 90° and stop. Repeat each ten times and measure the drift. Everything later depends on these two primitives.
+
+-  Hour 2 – 3 · See walls
+Print raw sensor values, set thresholds on the real maze under the real lights, add hysteresis, then get the wall-centring loop working.
+
+-  Hour 3 – 4 · Solve the maze slowly
+Wire flood fill to the movement primitives and search at a deliberately slow speed. Reaching the centre makes you competition-legal.
+
+-  Hour 4 – 5 · Return, re-run, speed up
+Add the return leg and the speed run. Raise speed in steps until it makes mistakes, then back off one step.
+
+-  Hour 5 – 6 · Freeze and rehearse
+Stop writing features. Charge the battery and run the full sequence end to end at least twice. Write down which setting is your banked run and which is your gamble.
+
+ Above all: a mouse that reliably finishes in 60 seconds beats one that would have done 12 and didn't. Build for a finish first, and always keep a working version to go back to.
+
+{#failures}
+ 02 The ways mice actually fail
+
+- A phantom wall in the map. Only record a wall from a reading taken at a consistent position in the cell.
+
+- Accumulated heading error. Correct heading against the walls continuously. Do not trust the gyro alone.
+
+- A corridor with no side walls. The centring loop steers hard at the gap. Detect it and hold heading.
+
+- Starting from the wrong place. Make sure a human placing the mouse in a hurry cannot get the start pose wrong.
+
+- A flat battery mid-slot. Charge between sessions and know how your mouse behaves as voltage falls.
+
+- An untested return leg. Test turning around inside the goal block.
+
+- A recovery at the wrong moment. It can wipe the map. Know whether you are willing to pay that before you raise your hand.
+
+ ← PreviousS4 Motion and hardware <micromouse-build.html> Next →S6 Reading and video <micromouse-reading.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

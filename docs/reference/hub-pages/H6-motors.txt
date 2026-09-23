@@ -1,0 +1,61 @@
+H6 2x GA12-N20 Micro Gear Motors — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Hardware <../micromouse-resources.html#hardware> / H6
+ H6 · Motors and encoders
+
+# 2x GA12-N20 Micro Gear Motors
+
+ One 6 V gearmotor per wheel, about 500 rpm no-load. The Hall encoder's A and B signals measure wheel movement and direction.
+
+ 01 Wiring
+
+[IMG src=../assets/micromouse/diagrams/GA12-N20-dual-encoder-wiring.svg alt='Two GA12-N20 motors connected to a DRI0044 motor driver, with both Hall encoders connected to an ESP32-C6']
+
+Motor power on the driver side, encoder signals on the 3.3 V logic side.
+
+| M+, M- | One DRI0044 motor output pair |
+
+| Encoder VCC | 3V3, only if the encoder supports it |
+
+| Encoder GND | Common ground |
+
+| Encoder A, B | Two ESP32 GPIO inputs per motor |
+
+Wire colours and connector order vary, so check the label or seller pinout for your exact motor.
+
+Two voltage traps. A full 2S battery is 8.4 V, above the motor's 6 V rating, so use a suitable motor supply or an approved limit. And an encoder signal above 3.6 V must never reach a GPIO, so power it from 3.3 V or level-shift.
+
+ 02 What A and B tell you
+
+- Pulse count is distance travelled.
+
+- Pulse frequency is wheel speed.
+
+- Which channel leads is direction.
+
+Do not assume a ticks-per-revolution figure. Gear ratio, encoder version and counting one, two or four edges all change it. Measure it.
+
+ 03 Test and calibrate
+
+- Wheels off the table, motor power off, encoder powered from the verified logic voltage.
+
+- Turn one wheel by hand and confirm both channels count.
+
+- Run that motor slowly through the DRI0044 <micromouse-dri0044.html> and check the count direction.
+
+- Repeat for the other wheel and record the measured ticks per wheel revolution.
+
+```
+distance per tick = (pi x wheel diameter) / measured ticks per revolution
+```
+
+If one wheel counts the wrong way, flip its sign in software. This gives you the 180 mm cell distance you need in S5 <micromouse-playbook.html>.
+
+ ← PreviousH5 Buck converter <micromouse-buck.html> Back to →Resource Hub <../micromouse-resources.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens

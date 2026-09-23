@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 760" role="img" aria-labelledby="title desc">
+  <title id="title">Three VL53L0X sensors connected to separate ESP32-C6 shutdown GPIOs</title>
+  <desc id="desc">All sensors share 3.3 volt power, ground, SDA and SCL. Three independent GPIOs connect separately to left, front and right XSHUT. Dots mark shared bus junctions; crossings without dots are not connected.</desc>
+  <style>
+    text { font-family: Arial, sans-serif; fill: #202838; }
+    .mono { font-family: monospace; font-size: 14px; }
+    .label { font-size: 18px; font-weight: 700; }
+    .pin { font-family: monospace; font-size: 13px; }
+    .wire { fill: none; stroke-width: 3; }
+  </style>
+  <rect width="1140" height="760" rx="24" fill="#f7f9fb"/>
+  <text x="570" y="42" text-anchor="middle" font-size="26" font-weight="700">3x VL53L0X ON ONE I2C BUS</text>
+  <text x="570" y="72" text-anchor="middle" class="mono">Shared power and I2C • Three separate XSHUT GPIOs</text>
+  <rect x="40" y="295" width="260" height="245" rx="16" fill="#e7eef7" stroke="#263548" stroke-width="2"/>
+  <text x="60" y="325" class="label">ESP32-C6</text>
+  <text x="60" y="350" class="pin">TEAM PIN MAP</text>
+  <text x="284" y="330" text-anchor="end" class="pin">3V3</text>
+  <path class="wire" stroke="#c62f42" d="M300 325 H330 V120 H1080"/>
+  <text x="60" y="111" class="mono">3V3 — shared</text>
+  <text x="284" y="355" text-anchor="end" class="pin">GND</text>
+  <path class="wire" stroke="#536273" d="M300 350 H360 V160 H1080"/>
+  <text x="60" y="151" class="mono">GND — shared</text>
+  <text x="284" y="380" text-anchor="end" class="pin">SDA</text>
+  <path class="wire" stroke="#266bbb" d="M300 375 H390 V200 H1080"/>
+  <text x="60" y="191" class="mono">SDA — shared</text>
+  <text x="284" y="405" text-anchor="end" class="pin">SCL</text>
+  <path class="wire" stroke="#947000" d="M300 400 H420 V240 H1080"/>
+  <text x="60" y="231" class="mono">SCL — shared</text>
+  <rect x="470" y="295" width="180" height="245" rx="16" fill="#e7eef7" stroke="#263548" stroke-width="2"/>
+  <text x="560" y="405" text-anchor="middle" class="label">LEFT</text>
+  <text x="560" y="433" text-anchor="middle" class="mono">VL53L0X / GY-530</text>
+  <text x="560" y="460" text-anchor="middle" class="mono">Address 0x30</text>
+  <text x="560" y="520" text-anchor="middle" class="pin">XSHUT</text>
+  <text x="284" y="440" text-anchor="end" class="pin">GPIO L</text>
+  <path id="xshut-0" class="wire" stroke="#b94d18" d="M300 435 H330 V585 H560 V540"/>
+  <text x="568" y="577" class="pin">XSHUT-L</text>
+  <path class="wire" stroke="#c62f42" d="M495 120 V295"/>
+  <circle cx="495" cy="120" r="5" fill="#c62f42"/>
+  <text x="495" y="318" text-anchor="middle" class="pin">VIN</text>
+  <path class="wire" stroke="#536273" d="M538 160 V295"/>
+  <circle cx="538" cy="160" r="5" fill="#536273"/>
+  <text x="538" y="318" text-anchor="middle" class="pin">GND</text>
+  <path class="wire" stroke="#266bbb" d="M581 200 V295"/>
+  <circle cx="581" cy="200" r="5" fill="#266bbb"/>
+  <text x="581" y="318" text-anchor="middle" class="pin">SDA</text>
+  <path class="wire" stroke="#947000" d="M624 240 V295"/>
+  <circle cx="624" cy="240" r="5" fill="#947000"/>
+  <text x="624" y="318" text-anchor="middle" class="pin">SCL</text>
+  <rect x="690" y="295" width="180" height="245" rx="16" fill="#e7eef7" stroke="#263548" stroke-width="2"/>
+  <text x="780" y="405" text-anchor="middle" class="label">FRONT</text>
+  <text x="780" y="433" text-anchor="middle" class="mono">VL53L0X / GY-530</text>
+  <text x="780" y="460" text-anchor="middle" class="mono">Address 0x31</text>
+  <text x="780" y="520" text-anchor="middle" class="pin">XSHUT</text>
+  <text x="284" y="475" text-anchor="end" class="pin">GPIO F</text>
+  <path id="xshut-1" class="wire" stroke="#7044ae" d="M300 470 H360 V620 H780 V540"/>
+  <text x="788" y="612" class="pin">XSHUT-F</text>
+  <path class="wire" stroke="#c62f42" d="M715 120 V295"/>
+  <circle cx="715" cy="120" r="5" fill="#c62f42"/>
+  <text x="715" y="318" text-anchor="middle" class="pin">VIN</text>
+  <path class="wire" stroke="#536273" d="M758 160 V295"/>
+  <circle cx="758" cy="160" r="5" fill="#536273"/>
+  <text x="758" y="318" text-anchor="middle" class="pin">GND</text>
+  <path class="wire" stroke="#266bbb" d="M801 200 V295"/>
+  <circle cx="801" cy="200" r="5" fill="#266bbb"/>
+  <text x="801" y="318" text-anchor="middle" class="pin">SDA</text>
+  <path class="wire" stroke="#947000" d="M844 240 V295"/>
+  <circle cx="844" cy="240" r="5" fill="#947000"/>
+  <text x="844" y="318" text-anchor="middle" class="pin">SCL</text>
+  <rect x="910" y="295" width="180" height="245" rx="16" fill="#e7eef7" stroke="#263548" stroke-width="2"/>
+  <text x="1000" y="405" text-anchor="middle" class="label">RIGHT</text>
+  <text x="1000" y="433" text-anchor="middle" class="mono">VL53L0X / GY-530</text>
+  <text x="1000" y="460" text-anchor="middle" class="mono">Address 0x32</text>
+  <text x="1000" y="520" text-anchor="middle" class="pin">XSHUT</text>
+  <text x="284" y="510" text-anchor="end" class="pin">GPIO R</text>
+  <path id="xshut-2" class="wire" stroke="#187765" d="M300 505 H390 V655 H1000 V540"/>
+  <text x="1008" y="647" class="pin">XSHUT-R</text>
+  <path class="wire" stroke="#c62f42" d="M935 120 V295"/>
+  <circle cx="935" cy="120" r="5" fill="#c62f42"/>
+  <text x="935" y="318" text-anchor="middle" class="pin">VIN</text>
+  <path class="wire" stroke="#536273" d="M978 160 V295"/>
+  <circle cx="978" cy="160" r="5" fill="#536273"/>
+  <text x="978" y="318" text-anchor="middle" class="pin">GND</text>
+  <path class="wire" stroke="#266bbb" d="M1021 200 V295"/>
+  <circle cx="1021" cy="200" r="5" fill="#266bbb"/>
+  <text x="1021" y="318" text-anchor="middle" class="pin">SDA</text>
+  <path class="wire" stroke="#947000" d="M1064 240 V295"/>
+  <circle cx="1064" cy="240" r="5" fill="#947000"/>
+  <text x="1064" y="318" text-anchor="middle" class="pin">SCL</text>
+  <text x="60" y="568" class="pin">GPIO L, F and R must be different pins.</text>
+  <rect x="40" y="684" width="1060" height="58" rx="12" fill="#fff4e9" stroke="#b94d18"/>
+  <text x="60" y="707" class="mono">BOOT: all XSHUT LOW → enable LEFT, set 0x30 → FRONT, set 0x31 → RIGHT, set 0x32</text>
+  <text x="60" y="730" class="pin">Repeat at every boot. Dots = junctions; crossings without dots = no connection.</text>
+</svg>

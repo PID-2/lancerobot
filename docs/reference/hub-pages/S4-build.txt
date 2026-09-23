@@ -1,0 +1,60 @@
+S4 Motion and Hardware — Dublin Micromouse Open 2026
+
+  HC Build Hub  <../index.html>
+ Home <../index.html> Workshops <../learn.html?scope=workshops> Wiki <../learn.html?scope=wiki> Search <../videos.html> Micromouse 2026 <../micromouse.html> Resource Hub <../micromouse-resources.html>
+
+ Resource Hub <../micromouse-resources.html> / Strategies / S4
+ S4 · Control and build
+
+# Motion and hardware
+
+ The algorithm is the easy half. Finishing mice make the robot go where the algorithm said, and know where it is while it does.
+
+{#motion}
+ 01 Motion and turns
+
+ Command motion in distance, not time: accelerate at a fixed rate to a cruise speed, hold, then decelerate to arrive at the target. A banked run and a flat-out run should be the same code with a different cruise speed and acceleration.
+
+ Build the pivot turn (stop, rotate, go) first as your reliable fallback. Then characterise an arc turn as a fixed, tested manoeuvre with a known entry offset, radius and exit offset, and let the planner call it by name. Do not compute turn geometry during a run.
+
+[IMG src=../assets/micromouse/diagrams/velocity-profile.svg alt='Velocity against distance for a pivot turn, which drops to zero at the corner, compared with a smooth arc turn that holds most of its speed.']
+
+Two ways through the same corner. Repeated 40 times, the gap is the race.
+
+{#position}
+ 02 Knowing where you are
+
+Encoder position is wrong: wheels slip and tyre diameters differ. Over a 40-cell run that error puts you in a wall. Use three corrections together.
+
+- Heading from the IMU. Calibrate the gyro's zero-rate offset with the mouse absolutely still at power-up.
+
+- Lateral position from the side walls. A PID loop on the left-right difference keeps you centred. It stops working when a wall disappears, so detect that and hold heading instead.
+
+- Longitudinal position from the front wall. Every visible front wall is a free reset of accumulated distance error.
+
+ Sensor discipline. Sample at a fixed rate in a timer. Use hysteresis (two thresholds) for wall present or absent. Read walls at a consistent point in the cell, because a single false wall sends the mouse confidently into a dead end.
+
+{#hardware}
+ 03 Hardware decisions for hour one
+
+Everyone gets the same parts. These choices are effectively permanent once you solder.
+
+- Geometry. Put the wheel axis under the centre of rotation, or every turn also translates the mouse.
+
+- Mass. Light beats powerful. Where you mount the battery is a handling decision.
+
+- Width. Narrow is margin for diagonals, not just for fitting.
+
+- Sensors. Angle side sensors slightly forward, aimed at mid-height on the wall face, so they never see the floor or clip over the top.
+
+- Power. Battery voltage sags under acceleration. Give the logic a stable rail from the buck converter.
+
+- Traction. Grip is the real speed limit. If raising acceleration stops helping, this is why.
+
+Component details are in the Hardware guides <../micromouse-resources.html#hardware>.
+
+ ← PreviousS3 Flood fill and routing <micromouse-algorithms.html> Next →S5 Playbook and failures <micromouse-playbook.html>
+
+Hack Club Build Hub — a practical teaching library for hackathons, clubs and community events. All backgrounds welcome.
+
+Hack Club <https://hackclub.com/> · For teens, by teens
