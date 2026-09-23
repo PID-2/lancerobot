@@ -1,0 +1,15 @@
+# build outputs
+harness/harness
+harness/harness_out.txt
+mms/mms_adapter
+mms/fake_stderr.txt
+mms/sweep_results.txt
+esp32/shim/dryrun
+esp32/shim/dryrun_out.txt
+esp32/build/
+*.o
+*.bin
+*.elf
+*.map
+__pycache__/
+.DS_Store
