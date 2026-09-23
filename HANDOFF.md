@@ -1,7 +1,7 @@
-# HANDOFF — Micromouse solver (Dublin Micromouse Open, Sat 26 Sep 2026)
+# HANDOFF — Micromouse (Dublin Micromouse Open, Sat 26 Sep 2026)
 
-Read this first. It is the complete state of the project as of 2026-09-23. `README.md` is the
-user-facing doc; this file is for the next Claude Code session.
+Read this first. It is the complete state of the project as of 2026-09-23 (evening).
+`README.md` is the user-facing doc; this file is for the next Claude Code session.
 
 ## Working rules (from Troy — non-negotiable)
 
@@ -11,127 +11,120 @@ user-facing doc; this file is for the next Claude Code session.
 - Time-box every task to 1–2 hours with a hard stop. No all-day chains unless he agrees.
 - Never guess hardware facts. Pin numbers, register maps, protocol details come from the
   datasheet or the event's Resource Hub pages, never from memory. If unsure, ask.
-- Terse, direct output. No hedging, no restating the request.
+- Terse, direct output. No hedging, no restating the request. He will ask you to "dumb it down";
+  plain yes/no questions work best.
+
+## Decisions Troy has already taken (do not re-ask)
+
+1. The project lives in github.com/hfhfkjh/lancerobot, branch `claude/new-session-eg03xa`.
+2. Start button and status LED are the ones on the DevKitC-1 (BOOT on GPIO9, RGB LED on GPIO8).
+3. The mouse is operated by button and LED only in the slot (rules forbid a console); the run
+   control was redesigned for that.
+4. Motor voltage is limited in software (duty cap 6 V / 8.4 V), no extra regulator.
 
 ## What this is
 
-A maze solver for the classic 16×16 UKMARS micromouse maze, plus the scaffolding to test it
-without a robot and to drop it onto the competition ESP32-C6. Event rules and kit are documented
-at https://hackclub.ucdelecsoc.com/micromouse-resources.html (pages S1–S6, H1–H6, C2–C3).
-Format: every team gets the same kit and six hours on the day; fastest verified run to the centre
-wins; 10 minutes and up to 5 runs per slot; best single run counts; map persists between runs.
+A maze solver for the classic 16×16 UKMARS maze, the scaffolding to test it without a robot,
+and the ESP32-C6 firmware around it. The event site is https://hackclub.ucdelecsoc.com/micromouse-resources.html;
+everything it and the linked rules/datasheets say that matters is condensed in
+`docs/resource-hub-digest.md`, with raw copies in `docs/reference/`. Format: every team gets the
+same kit and six hours; 10 minutes and up to 5 runs per slot (judges may shorten); best single
+run counts; map persists between runs; a manual recovery requested by the handler erases the map.
 
 ## Layout
 
 ```
 solver/solver.h                  THE ALGORITHM. Header-only C++11, no heap/STL. Tested. Do not edit casually.
 harness/harness.cpp              Offline test: perfect-sensor mouse through real maze files.
-mms/mms_adapter.cpp              Adapter for the mms simulator (github.com/mackorone/mms), stdin/stdout protocol.
-mms/fake_mms.py                  Headless stand-in for mms; used to sweep the adapter over all mazes.
-mms/mms_adapter.exe              Windows build of the adapter (x86_64-w64-mingw32-g++, -static). Troy runs this.
-esp32/micromouse_esp32/*.ino     Arduino sketch. Hardware layer is STUBS. Ships in dry-run mode.
-esp32/micromouse_esp32/solver.h  Copy of solver/solver.h (Arduino needs it beside the .ino). Keep in sync.
-esp32/shim/                      Fake Arduino.h + main.cpp so the .ino can be compiled with g++ on a desktop.
-mazefiles/classic/*.txt          522 contest mazes from github.com/micromouseonline/mazefiles.
+mms/mms_adapter.cpp              Adapter for the mms simulator; mms_adapter.exe is Troy's Windows build.
+mms/fake_mms.py                  Headless stand-in for mms; sweeps the adapter over all mazes.
+esp32/micromouse_esp32/          Arduino sketch: config.h (pins/limits), run control (.ino), hal_dryrun.h, hal_esp32c6.h
+esp32/micromouse_esp32/solver.h  Copy of solver/solver.h. Keep in sync (diff them).
+esp32/shim/                      Desktop test of the sketch: virtual clock, scripted button and console, 15 checks.
+docs/                            resource-hub-digest.md, pinout.md, reference/ (site pages, diagrams, datasheets, rules)
+mazefiles/classic/*.txt          522 contest mazes.
 ```
 
-## Architecture (solver.h)
+## Architecture
 
-Three layers, one seam. The solver never touches hardware.
+**solver.h** (unchanged apart from one line, see below): `Maze` (walls/known bits, flood),
+`Planner` (Dijkstra over cell×heading, costs STRAIGHT=10, TURN90=35, TURN180=60 tenths),
+`Mouse` (SEARCH_OUT → SEARCH_BACK → proven? → SPEED_RUN → DONE). Contract:
+`observe(l,f,r)`, `next()`, `applyMove(m)`, `moveIsSafe(m)`. `startRun()` now re-plans the fast
+route from the latest map each run and drops back to search if no route is left.
 
-- `Maze` — `walls[256]`, `known[256]` (one bit per side N/E/S/W), cell index `x + 16*y`, (0,0)
-  bottom-left, y up. `setWall()` updates both neighbours. `reset()` marks the boundary and the three
-  start-cell walls known. `flood(unknownOpen)` is BFS from the goal cells; `passable()` treats
-  unseen sides as open (optimistic) or walled (pessimistic).
-- `Planner` — Dijkstra over 1024 (cell, heading) states. Costs in tenths: `STRAIGHT=10`,
-  `TURN90=35`, `TURN180=60`. O(V²) selection, ~0.17 ms desktop worst case; scratch arrays are
-  function-static (~5 KB) to stay off the ESP32 task stack. Not reentrant.
-- `Mouse` — run controller. Phases: `SEARCH_OUT` (each cell: plan optimistic route to centre, take
-  its first move; fallback plain flood) → `SEARCH_BACK` (flood to start) → at start, `routeProven()`
-  = optimistic plan cost == pessimistic plan cost → if proven or `maxExploreLoops` (3) reached,
-  `planSpeedRun()` on the pessimistic map → `SPEED_RUN` replays `fastPath` → `DONE`.
-  `startRun()` resets pose to (0,0) facing N and keeps the map. `forgetMaze()` = full reset.
+**Sketch** (rewritten this session):
+- `config.h` — pin map (proposal, see docs/pinout.md), electrical limits, CALIBRATE constants,
+  run-control timings. `HARDWARE_READY` lives here (0 as shipped).
+- `micromouse_esp32.ino` — state machine IDLE → COUNTDOWN (1.5 s) → RUNNING → REST (2 s, a rule)
+  → IDLE, plus FAULT. Button gestures: short = go / stop / clear fault, 1.5 s = next level,
+  5 s = forget. LED colours documented in the README. `runAbortRequested()` is polled by every
+  hardware move so the button stops the wheels within ~50 ms. Bench console kept for the bench.
+- `hal.h` — the interface; `hal_dryrun.h` — fake sensors on uk2016f, real button/LED;
+  `hal_esp32c6.h` — motors (LEDC 20 kHz, duty cap), quadrature encoders on interrupts, three
+  VL53L0X booted through XSHUT to 0x30/31/32 with non-blocking continuous reads and
+  hysteresis, MPU-6050 at 0x68 or 0x69 with boot-time bias calibration, forwardOneCell
+  (trapezoid on encoders, wall centring, gyro heading hold, front-wall reset), pivot turns by
+  gyro with encoder cross-check, bench commands w/e/i/m/c/b, calibration refusal until the
+  encoder and wheel constants are set.
 
-Contract with the outside world:
+Hardware facts the firmware relies on and where they came from: DRI0044 schematic (STBY tied
+high, DIR through an inverter → PWM 0 = short brake, VCC must be 3V3 for the input thresholds);
+TB6612 datasheet (100 kHz max PWM, 1.2 A); SEN0142 schematic (4.7 kΩ pull-ups on board, AD0 on
+a solder jumper → 0x68 or 0x69, VLOGIC 3.3 V); MPU-6000A spec (±500 dps = 65.5 LSB/dps);
+H4 page (XSHUT sequence, addresses); Pololu README (API); DevKitC-1 user guide (strapping
+4/5/8/9/15, USB 12/13, UART 16/17, RGB LED on 8, power options mutually exclusive).
+
+## Test status (2026-09-23)
+
 ```
-mouse.observe(left, front, right)   // relative wall readings at the cell centre
-Move m = mouse.next()               // F, L, R, B, or STOP (run over)
-execute m; mouse.applyMove(m)
-mouse.moveIsSafe(m)                 // the side about to be crossed is known open
+harness     522 tested, 522 passed, 0 failed; optimal 498/520 (95.8%); mean ratio 1.002; worst 1.128 (sd2p02)
+fake_mms    522 mazes, 0 crashes, all runs end at (0,0)
+desktop     esp32/shim: 15/15 checks (console run, level change, countdown cancel, speed run to centre,
+            emergency stop, fault clear, forget maze), virtual time ~50 s
+arduino     compiles clean (--warnings all) for esp32:esp32:esp32c6, core 3.3.12:
+            HARDWARE_READY 0: 287 KB flash / 23 KB RAM;  HARDWARE_READY 1: 334 KB / 24 KB
 ```
-Move semantics: `F` = forward one cell; `L`/`R` = turn 90° then forward one cell; `B` = 180° then
-forward one. Every move ends at a cell centre. `compressPath()` gives `S<n>`/`L`/`R`/`B` segments
-so a motion layer can accelerate over straights. Diagonals are deliberately not implemented.
-
-## Test status
-
-Harness, all 522 classic mazes, 2026-09-22:
-```
-522 tested, 522 passed, 0 failed
-fast route optimal in 498/520 (95.8%); mean cost ratio 1.002; worst 1.128 (sd2p02)
-mean search cells before speed run 357; mean runs to first speed run 3.28
-```
-- "Optimal" = planned fast route cost equals the best route with the full maze known.
-- The 4% non-optimal hit `maxExploreLoops=3`; at 5 it is 99.4% with ~4% more search driving.
-- Two mazes (001, 001-anomaly-test) have a sealed centre; the solver stops without crashing.
-- fake_mms sweep over all 522 mazes: 0 crashes.
-- mms GUI on Windows: run 1 search out and back proven on the first loop (100-move route).
-  Speed run confirmed after the ackReset fix below. (Troy last reported the fixed exe was sent;
-  confirm with him that the speed run completed in mms.)
+Nothing has run on the real mouse. `hal_esp32c6.h` is a first cut from the datasheets: expect
+gain tuning and sign flips, not restructuring. The Windows `mms_adapter.exe` predates the solver's
+one-line change (replan on startRun); behaviour in mms is unaffected unless a wall is observed
+during a speed run, but rebuild it when convenient (mingw is not in this container).
 
 ## Bugs found and fixed (so you don't reintroduce them)
 
-1. **mms replies `ack` to `ackReset`.** The adapter originally sent it with no read; every reply
-   after a Reset was then off by one line and the wall readings were garbage. Fixed: `ask("ackReset")`.
-   `fake_mms.py` now replies `ack` too. Rule: every mms command that returns something must be read.
-2. **Busy-wait on `wasReset` floods the mms GUI thread.** Now polls every 100 ms.
-3. **`SIZE` clashes with `windows.h`** when the adapter is built with MinGW. Use `mm::SIZE`.
-4. Initial `routeProven()` compared BFS cell counts, not turn-weighted cost → 73% optimal. Now
-   compares planner costs → 95.8%.
+1. mms replies `ack` to `ackReset`; it must be read or every later reply is off by one.
+2. Busy-wait on `wasReset` floods the mms GUI thread; poll every 100 ms.
+3. `SIZE` clashes with `windows.h` under MinGW; use `mm::SIZE`.
+4. `routeProven()` must compare planner costs, not BFS cell counts (73% → 95.8% optimal).
+5. `PIN_RGB_LED` is a macro in the ESP32-C6 Arduino variant; the sketch's constant is `PIN_STATUS_LED`.
+6. The fast route was never re-planned after `speedRunReady`; a wall seen during a speed run
+   was run into again next run. `startRun()` now re-plans (harness numbers unchanged).
 
 ## How to build and test
 
-```
-# solver against all mazes (must stay 522/522, 0 crashes)
-cd harness && g++ -std=c++11 -O2 -Wall -Wextra -I../solver harness.cpp -o harness && ./harness ../mazefiles/classic/*.txt
-./harness -v ../mazefiles/classic/uk2016f.txt          # per-cell trace
-
-# adapter, headless
-cd mms && g++ -std=c++11 -O2 -I../solver mms_adapter.cpp -o mms_adapter
-python3 fake_mms.py ../mazefiles/classic/uk2016f.txt ./mms_adapter      # expect crashes=0
-
-# adapter, Windows exe (Troy has no local compiler)
-x86_64-w64-mingw32-g++ -std=c++11 -O2 -static -I../solver mms_adapter.cpp -o mms_adapter.exe
-
-# sketch, desktop compile-check + dry run (no Arduino toolchain needed)
-cd esp32/shim && g++ -std=c++11 -O2 -Wall -Wextra -x c++ -I. -I../micromouse_esp32 main.cpp -o dryrun && ./dryrun
-```
-mms config on Troy's Windows box: Directory = `...\micromouse\mms`, Build = empty,
-Run = full path to `mms_adapter.exe`. Reset button in mms = new run, map kept.
-
-The sketch has NOT been compiled with the real ESP32 Arduino core (toolchain unreachable from the
-build environment). Expect trivial fixes on first real compile — `Serial.printf`, `PROGMEM`,
-`pgm_read_byte` are all standard on the ESP32 core, so nothing structural.
+See README "Build and test". In this container the ESP32 toolchain lives at /opt/arduino
+(`arduino-cli`, core esp32 3.3.12, libraries cloned from GitHub into /opt/arduino/user/libraries
+because downloads.arduino.cc's library index is blocked). It is not in the repo; a fresh session
+must reinstall it (about 10 minutes; `arduino-cli config set network.proxy "$HTTPS_PROXY"` first).
 
 ## Open work, in priority order
 
-1. **Hardware layer** in the .ino (motion owner + sensor owner on the team, not necessarily Troy):
-   `readWalls`, `forwardOneCell`, `turnLeft/Right/Around`, `calibrateGyro`. Contracts are in the
-   README table. Kit per the Resource Hub: ESP32-C6-DevKitC-1, DFRobot DRI0044 driver, SEN0142
-   IMU (MPU-6050 @0x68), 3× VL53L0X (re-address to 0x30/31/32 via XSHUT every boot), 2S→5 V buck,
-   2× GA12-N20 encoded motors. Pin map block at the top of the sketch is the single source of truth
-   and is currently placeholder (button GPIO2, LED GPIO7). Avoid strapping pins 4,5,8,9,15 and USB
-   12,13. Check every pin against the DevKitC-1 pinout PNG on page H1 — never from memory.
-2. **Measure `TURN90`** on the real mouse (ten straight cells vs ten cells with a turn each) and set
-   it in `Planner`. It changes which route is chosen.
-3. **Confirm `plan()` time on the C6** with `micros()`. Estimate ~10 ms/cell. If it matters, replace
-   the O(V²) selection with a bucket queue (max edge weight is 70 tenths).
-4. Optional: raise `maxExploreLoops` to 5 if search runs are fast enough on the real maze.
-5. Optional, after everything above is reliable: diagonal rewriting of `L R L R` runs (S3).
+1. **Bench bring-up** (team, with the mouse): docs/pinout.md checklist, then the calibration
+   checklist at the top of hal_esp32c6.h. Fill the CALIBRATE constants in config.h. Expect to
+   flip signs and tune gains. Record ticks/rev, wheel diameter, track width, thresholds.
+2. **Measure `TURN90`** on the real mouse (ten straight cells vs ten cells with a turn each) and
+   set it in `Planner`. It changes which route is chosen.
+3. **Confirm `plan()` time on the C6** with `micros()` (estimate ~10 ms/cell). If it matters,
+   replace the O(V²) selection with a bucket queue (max edge weight 70 tenths).
+4. Speed runs currently stop at every cell centre (solver contract). Carrying speed across `S<n>`
+   straights in `forwardOneCell` is the next real speed gain once level 2 is reliable.
+5. Optional: `maxExploreLoops` 5 if search runs are fast enough; diagonals (S3) last.
+6. Rebuild `mms/mms_adapter.exe` with MinGW after the solver change.
 
 ## Things not to do
 
-- Don't refactor `solver.h` without re-running the 522-maze harness.
+- Don't refactor `solver.h` without re-running the 522-maze harness and the fake_mms sweep.
 - Don't add STL containers or heap allocation to `solver.h`; it must stay Arduino-safe.
-- Don't change move semantics (`L` = turn + one cell) — the sketch, adapter and harness all assume it.
+- Don't change move semantics (`L` = turn + one cell) — sketch, adapter and harness all assume it.
+- Don't put hardware numbers anywhere but `config.h` (and its mirror `docs/pinout.md`).
 - Don't touch Troy's server, repos or hardware without permission for that specific action.
