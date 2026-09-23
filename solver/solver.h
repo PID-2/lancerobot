@@ -283,12 +283,16 @@ struct Mouse {
 
   // Start of a timed run: mouse placed in the start cell facing north.
   // Keeps the map. Picks the phase from what we already know.
+  // The fast route is re-planned from the latest map every time, so a wall
+  // first seen during an earlier speed run is routed around rather than run
+  // into again. If the known map no longer holds a route, search again.
   void startRun() {
     cell = cellIndex(0, 0);
     heading = N;
     pathIdx = 0;
-    phase = speedRunReady ? PHASE_SPEED_RUN : PHASE_SEARCH_OUT;
     maze.setGoalCentre();
+    if (speedRunReady) planSpeedRun();
+    phase = speedRunReady ? PHASE_SPEED_RUN : PHASE_SEARCH_OUT;
   }
 
   // Rules: a judge-requested recovery erases the mouse's memory of the maze.
