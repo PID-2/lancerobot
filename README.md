@@ -146,6 +146,7 @@ cd esp32/shim && g++ -std=c++11 -O2 -Wall -Wextra -x c++ -I. -I../micromouse_esp
 
 # sketch, real toolchain (Arduino IDE: board "ESP32C6 Dev Module", core esp32 by Espressif 3.x;
 # libraries VL53L0X by Pololu, MPU6050 by Electronic Cats)
+esp32/tools/install-arduino.sh      # Linux one-shot: arduino-cli + core + libraries under /opt/arduino, then both compiles
 arduino-cli compile --fqbn esp32:esp32:esp32c6 esp32/micromouse_esp32
 arduino-cli compile --fqbn esp32:esp32:esp32c6 --build-property "compiler.cpp.extra_flags=-DHARDWARE_READY=1" esp32/micromouse_esp32
 ```
