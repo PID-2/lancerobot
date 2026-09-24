@@ -16,7 +16,8 @@ Read this first. It is the complete state of the project as of 2026-09-23 (eveni
 
 ## Decisions Troy has already taken (do not re-ask)
 
-1. The project lives in github.com/hfhfkjh/lancerobot, branch `claude/new-session-eg03xa`.
+1. The project lives in github.com/PID-2/lancerobot, branch `claude/zen-wozniak-74804d` (moved on
+   2026-09-24 from hfhfkjh/lancerobot, branch `claude/new-session-eg03xa`, which is no longer updated).
 2. Start button and status LED are the ones on the DevKitC-1 (BOOT on GPIO9, RGB LED on GPIO8).
 3. The mouse is operated by button and LED only in the slot (rules forbid a console); the run
    control was redesigned for that.
@@ -102,10 +103,12 @@ during a speed run, but rebuild it when convenient (mingw is not in this contain
 
 ## How to build and test
 
-See README "Build and test". In this container the ESP32 toolchain lives at /opt/arduino
-(`arduino-cli`, core esp32 3.3.12, libraries cloned from GitHub into /opt/arduino/user/libraries
-because downloads.arduino.cc's library index is blocked). It is not in the repo; a fresh session
-must reinstall it (about 10 minutes; `arduino-cli config set network.proxy "$HTTPS_PROXY"` first).
+See README "Build and test". The ESP32 toolchain is not in the repo. A fresh container installs
+it with `esp32/tools/install-arduino.sh`: about 3 minutes, then it compiles the sketch both ways as
+a smoke test (about 3 more). It pins arduino-cli 1.5.1, core esp32 3.3.12 and the two libraries at
+the tags the sketch was verified with, all under /opt/arduino, and passes `$HTTPS_PROXY` through.
+The GitHub releases web page and api.github.com are blocked by the container proxy; release
+downloads, espressif.github.io and downloads.arduino.cc are not. That is why versions are pinned.
 
 ## Open work, in priority order
 
